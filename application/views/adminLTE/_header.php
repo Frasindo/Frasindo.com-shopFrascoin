@@ -15,6 +15,7 @@
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?= base_url("assets/") ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Theme style -->
+  <link rel="stylesheet" href="<?= base_url("assets/") ?>costum.css">
   <link rel="stylesheet" href="<?= base_url("assets/") ?>dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
@@ -29,4 +30,10 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<style>
+    .disabledLink {
+         cursor: no-drop;  
+         pointer-events: none; 
+    }
+</style>
 </head>

@@ -22,7 +22,7 @@ class Home extends CI_Controller {
 	{
         $data["judul"] = "Home";
         $data["home"] = array();
-        $data["menu"] = array("data"=>array((object)array("link"=>base_url(),"nama_link"=>"Home","icon"=>"fa fa-home")));
+        $data["menu"] = array("data"=>array((object)array("link"=>base_url(),"nama_link"=>"Home","icon"=>"fa fa-home","disable"=>false),(object)array("link"=>base_url(),"nama_link"=>"Account","icon"=>"fa fa-user","disable"=>true),(object)array("link"=>base_url(),"nama_link"=>"Forum","icon"=>"fa fa-comments","disable"=>true)));
 		$this->load->view("adminLTE/_header",$data);
 		$this->load->view("adminLTE/_home",$data);
 		$this->load->view("adminLTE/_footer");

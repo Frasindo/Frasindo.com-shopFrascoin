@@ -4,9 +4,9 @@
      
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <?php foreach($data as $menu){ ?>
+        <?php $disabled = 'class="disabledLink"'; foreach($data as $menu){ ?>
         <li>
-          <a href="<?= $menu->link ?>">
+          <a href="<?= $menu->link ?>" <?= ($menu->disable == true)?$disabled:null ?>  >
             <i class="<?= $menu->icon ?>"></i> <span><?= $menu->nama_link ?></span>
           </a>
         </li>
