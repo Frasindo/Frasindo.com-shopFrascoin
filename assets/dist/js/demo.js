@@ -346,26 +346,64 @@ $(function () {
   setup()
 
   $('[data-toggle="tooltip"]').tooltip()
-var target_date = new Date('2017-07-01').getTime();
-var days, hours, minutes, seconds;
-var countdown = document.getElementById('countdown');
-setInterval(function () {
-    var current_date = new Date().getTime();
-    var seconds_left = (target_date - current_date) / 1000;
-    days = parseInt(seconds_left / 86400);
-    seconds_left = seconds_left % 86400;
-    hours = parseInt(seconds_left / 3600);
-    seconds_left = seconds_left % 3600;
-    minutes = parseInt(seconds_left / 60);
-    seconds = parseInt(seconds_left % 60);
-    countdown.innerHTML =days +  ':' + hours + ':'
-    + minutes + ':' + seconds; 
     
- 
-}, 1000);
-setInterval(function () {
-    getData();
-}, 4000);
+ var myElem = document.getElementById('dollar_class');
+    if(myElem != null)
+    {
+        var target_date = new Date('2017-07-01').getTime();
+        var days, hours, minutes, seconds;
+        var countdown = document.getElementById('countdown');
+        setInterval(function () {
+            var current_date = new Date().getTime();
+            var seconds_left = (target_date - current_date) / 1000;
+            days = parseInt(seconds_left / 86400);
+            seconds_left = seconds_left % 86400;
+            hours = parseInt(seconds_left / 3600);
+            seconds_left = seconds_left % 3600;
+            minutes = parseInt(seconds_left / 60);
+            seconds = parseInt(seconds_left % 60);
+            countdown.innerHTML =days +  ':' + hours + ':'
+            + minutes + ':' + seconds; 
+
+
+        }, 1000);
+        setInterval(function () {
+                    getData();
+        }, 4000);
+    }
+var checking = document.getElementById('new_nxt');
+if(checking != null)
+{
+    $(".nothave").click(function() {
+        setTimeout(function(){
+         $.get(base_url+"/rest/createNXT", function(data) {
+            $("#new_nxt").html("");
+            var html = "";
+            html +='<p style="font-size: 20px; padding-bottom: 12px">Your NXT Account Is :</p>';
+            html +=' <table><tr><th class="bold" style="font-size: 20px">Account </th><td class="bold addr" style="font-size: 20px"> '+data.data.nxt_address+'</td></tr> <tr><th class="bold" style="font-size: 20px">Secret </th><td class="bold" style="font-size: 20px">'+data.data.secretKey+' </td></tr><tr><th></th><td style="color : red;"><p>Save this password in a very secure location, because you will need this Nxt address and secret, after the ICO to view how many ADL coins you have in your wallet. Your ADL balance will be displayed in the Account module.</p></td></tr></table>';
+           $("#new_nxt").append(html);
+         });
+        },2000);
+    });
+    $("#saveNewNXT").click(function() {
+       var addr = $(".addr").text();
+        $("#saveNewNXT").attr("disabled",true);
+        $.post(base_url+"rest/saveNXT", {nxt_address: addr}, function(result){
+             setTimeout(function(){
+                  if(result.status == 1)
+                  {
+                      $("#new_nxt").html("");
+                      $("#new_nxt").append("<div class='alert alert-success'>New NXT Address Has Been Updated</div>");
+                      setTimeout(function(){window.location=base_url;},2000);
+                  }else{
+                      alert("Failed to Save new NXT Account");
+                      setTimeout(function(){window.location=base_url;},2000);
+                  }
+             },2000);
+        });
+        $("#saveNewNXT").attr("disabled",false);
+    });
+}
 })
 
 function getData() {

@@ -25,7 +25,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['base_url']  =  "http://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= preg_replace('@/+$@', '', dirname($_SERVER['SCRIPT_NAME'])).'/';
-
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -315,7 +314,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'dGhpU29mdHdhcmVDcmVhdGVCeUBTeXN0ZW1GaXZlQCxJbmRyYUd1bmFuZGE';
 
 /*
 |--------------------------------------------------------------------------
