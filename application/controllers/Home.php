@@ -17,7 +17,7 @@ class Home extends CI_Controller {
                     $this->session->unset_userdata("nxt_address");
                     $this->session->userdata("nxt_address",null);
                 }
-                if($this->session->nxt_address != null)
+                if(strlen($this->session->nxt_address) > 1)
                 {
                     include APPPATH . 'third_party/qr/phpqrcode.php';
                     ob_start();

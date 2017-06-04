@@ -60,6 +60,41 @@ class Rest extends \Restserver\Libraries\REST_Controller {
         }
         
     }
+    function validNXT_post()
+    {
+        $autoGen = $this->input->post("address");
+        try {
+            $ch = curl_init();
+
+            if (FALSE === $ch)
+                throw new Exception('failed to initialize');
+
+            curl_setopt($ch, CURLOPT_URL, 'http://91.235.72.49:7876/nxt?=%2Fnxt&requestType=getAccount&account='.$autoGen);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
+            curl_setopt($ch, CURLOPT_POST, true);
+
+            $content = curl_exec($ch);
+
+            if (FALSE === $content)
+                throw new Exception(curl_error($ch), curl_errno($ch));
+             $data =  json_decode($content);
+             if(isset($data->accountRS))
+             {
+                $this->response(array("status"=>1,"data"=>array("nxt_address"=>$data->accountRS)));
+             }else{
+                $this->response(array("status"=>0,"data"=>$data));
+             }
+        } catch(Exception $e) {
+            trigger_error(sprintf(
+                'Curl failed with error #%d: %s',
+                $e->getCode(), $e->getMessage()),
+                E_USER_ERROR);
+
+        }
+        
+    }
     function saveNXT_post()
     {
         $this->load->model("acc");

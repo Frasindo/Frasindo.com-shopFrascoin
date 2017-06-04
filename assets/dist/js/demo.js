@@ -403,6 +403,29 @@ if(checking != null)
         });
         $("#saveNewNXT").attr("disabled",false);
     });
+    $("#save_nxt").click(function() {
+        var addr = $("#nxt_acc").val();
+        var stat;
+            $.post(base_url+"rest/validNXT", {address: addr}, function(result){
+                if(result.status == 1)
+                  {
+                      $.post(base_url+"rest/saveNXT", {nxt_address: addr}, function(result){
+                            if(result.status == 1)
+                              {
+                                  $("#haveit").html("");
+                                  $("#haveit").append("<div class='alert alert-success'>New NXT Address Has Been Updated</div>");
+                                  setTimeout(function(){window.location=base_url;},2000);
+                              }else{
+                                  alert("Failed to Save new NXT Account");
+                                  setTimeout(function(){window.location=base_url;},2000);
+                              }
+                        });
+                  }else{
+                      stat = 0;
+                      alert("Please Enter Valid NXT Account");
+                  }
+            }); 
+    });
 }
 })
 

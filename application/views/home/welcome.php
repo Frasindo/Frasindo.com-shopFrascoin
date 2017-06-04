@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Welcome to Frashop</h3>
+                            <h3 class="box-title">Welcome to Frashop </h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
@@ -24,14 +24,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="have">
-                                                <div class="row">
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" id="nxt_acc" placeholder="NXT Account">
-                                                </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-4">
-                                                    <button class="btn btn-info" type="button" style="margin-top: 20px" id="save_nxt">Save</button>
+                                                <div id="haveit">
+                                                    <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <input class="form-control" id="nxt_acc" placeholder="NXT Account">
+                                                    </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                        <button class="btn btn-info" type="button" style="margin-top: 20px" id="save_nxt">Save</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
