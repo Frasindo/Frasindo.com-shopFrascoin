@@ -5,13 +5,13 @@ class Acc extends CI_Model {
     {
             parent::__construct();
     }
-    function updateNXT($nxt,$sesi)
+    function updateNXT($nxt,$btc,$sesi)
     {
         $getUser = $this->db->get_where("user_info",array("login_id"=>$sesi));
         if($getUser->num_rows() > 0)
         {
             $this->db->where('login_id',$sesi);
-            $data = array("nxt_address"=>$nxt);
+            $data = array("nxt_address"=>$nxt,"btc_address"=>$btc);
             $updateData = $this->db->update('user_info', $data);
             if($updateData)
             {

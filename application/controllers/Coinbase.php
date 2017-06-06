@@ -8,10 +8,21 @@ use Coinbase\Wallet\Resource\Account;
 class Coinbase extends CI_Controller {
 	public function index()
 	{
+	
         $date = new DateTime();
         $configuration = Configuration::apiKey("bOFtsDfxvaDZ7wzW", "aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
         $client = Client::create($configuration);
-        $time = $client->getTime();
-        $date->setTimestamp((int)$time["epoch"]);
+       	$account = new Account([
+  	  'name' => 'Last Dompet'
+	]);
+	$client->createAccount($account);
+	$data = $client->decodeLastResponse();
+	$id = $data["data"]["id"];
+	$acc = Account::reference($id);
+	$address = new Address([
+  	  'name' => 'Last DOmpet'
+	]);
+	$client->createAccountAddress($acc, $address);
+	print_r($client->decodeLastResponse());
     }
 }

@@ -19,7 +19,7 @@ class Auth extends CI_Model {
                 $adminInfo = $this->db->get_where("admin_info",array("login_id"=>$checkUser->result()[0]->id_login));
                 if($checkUser->result()[0]->access == 0)
                 {
-                    return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("access"=>$checkUser->result()[0]->access,"nxt_address"=>$userInfo->result()[0]->nxt_address,"id_login"=>$checkUser->result()[0]->id_login ,"email"=>$checkUser->result()[0]->email));
+                    return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("access"=>$checkUser->result()[0]->access,"btc_address"=>$userInfo->result()[0]->btc_address,"nxt_address"=>$userInfo->result()[0]->nxt_address,"id_login"=>$checkUser->result()[0]->id_login ,"email"=>$checkUser->result()[0]->email));
                 }elseif($checkUser->result()[0]->access == 1)
                 {
                     return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("access"=>$checkUser->result()[0]->access,"name"=>$adminInfo->result()[0]->nama,"email"=>$checkUser->result()[0]->email));

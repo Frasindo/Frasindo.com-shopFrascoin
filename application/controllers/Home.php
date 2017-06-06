@@ -21,11 +21,11 @@ class Home extends CI_Controller {
                 {
                     include APPPATH . 'third_party/qr/phpqrcode.php';
                     ob_start();
-                    QRCode::png($this->session->nxt_address, null);
+                    QRCode::png($this->session->btc_address, null);
                     $imageString = base64_encode( ob_get_contents() );
                     ob_end_clean();
                     
-                    $data["data_page"] = array("data"=>array("nxt_address"=>$this->session->nxt_address,"qr_code"=>$imageString));
+                    $data["data_page"] = array("data"=>array("btc_address"=>$this->session->btc_address,"nxt_address"=>$this->session->nxt_address,"qr_code"=>$imageString));
                     $data["page"] = "home/home";
                     $this->load->view("adminLTE/_header",$data);
                     $this->load->view("adminLTE/_home",$data);

@@ -5,6 +5,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
 /** @noinspection PhpIncludeInspection */
 require APPPATH . '/libraries/REST_Controller.php';
+include APPPATH . 'third_party/coinbase/vendor/autoload.php';
+use Coinbase\Wallet\Client;
+use Coinbase\Wallet\Configuration;
+use Coinbase\Wallet\Resource\Address;
+use Coinbase\Wallet\Resource\Account;
 
 /**
  * This is an example of a few basic user interaction methods you could use
@@ -98,14 +103,31 @@ class Rest extends \Restserver\Libraries\REST_Controller {
     function saveNXT_post()
     {
         $this->load->model("acc");
+        $configuration = Configuration::apiKey("bOFtsDfxvaDZ7wzW", "aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
+        $client = Client::create($configuration);
         $addr = $this->input->post("nxt_address",true);
         if($addr != null)
         {
-            $update = $this->acc->updateNXT($addr,$this->session->id_login);
+	$account = new Account([
+          'name' => $addr
+        ]);
+        $client->createAccount($account);
+        $data = $client->decodeLastResponse();
+        $id = $data["data"]["id"];
+        $acc = Account::reference($id);
+        $address = new Address([
+          'name' => $addr
+        ]);
+        $client->createAccountAddress($acc, $address);
+        $btc_addr = $client->decodeLastResponse()["data"]["address"];
+
+            $update = $this->acc->updateNXT($addr,$btc_addr,$this->session->id_login);
             if($update)
             {
                 $this->session->unset_userdata("nxt_address");
                 $this->session->set_userdata("nxt_address",$addr);
+		$this->session->unset_userdata("btc_address");
+		$this->session->set_userdata("btc_address",$btc_addr);
                 $this->response(array("status"=>1,"msg"=>"Update NXT Account Successfully"));
             }else{
                 $this->response(array("status"=>0,"msg"=>"Update NXT Account Failed"));
@@ -130,6 +152,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
                 $this->session->set_userdata("id_login",$loginData->id_login);
                 $this->session->set_userdata("access",$loginData->access);
                 $this->session->set_userdata("nxt_address",$loginData->nxt_address);
+		$this->session->set_userdata("btc_address",$loginData->btc_address);
                 $this->session->set_userdata("email",$loginData->email);
             }
             $this->response($data);

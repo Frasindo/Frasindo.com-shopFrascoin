@@ -92,9 +92,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <h3>Your ICO Address</h3>
                                                     <figure class="figure">
                                                         <center>
-                                                            <img src="data:image/png;base64,<?= $data["qr_code"] ?>" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."></center>
+                                                            <img src="data:image/png;base64,<?= $data["qr_code"] ?>" class="figure-img img-fluid rounded" alt="<?= $data["btc_address"] ?>"></center>
                                                         <figcaption class="figure-caption text-center">
-                                                            <h4><?= $data["nxt_address"] ?></h4></figcaption>
+                                                            <h4><?= $data["btc_address"] ?></h4></figcaption>
                                                         <figcaption class="figure-caption text-center"><a href="" class="btn btn-info">Copy Address</a></figcaption>
                                                     </figure>
                                                     <h3>Fund with</h3>
