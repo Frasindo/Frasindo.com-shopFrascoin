@@ -24,19 +24,27 @@ use Coinbase\Wallet\Resource\Account;
  */
 class Rest extends \Restserver\Libraries\REST_Controller {
 
+    public $apiKey;
+    public $secretApi;
+    public $nxt_server = "http://nxt.server.frasindo.com:26876";
     function __construct()
     {
         // Construct the parent class
         parent::__construct();
-
+	$this->apiKey = "bOFtsDfxvaDZ7wzW";
+	$this->secretApi = "aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG";	
     }
-    function test_get()
+    protected function _sessionRestrict()
     {
-        $gen = $this->encrypt->decode("Q2yWVnifxVcJRs3Zz/kU1lkaW3swznsyrUBhOh2MA4torFNtMNnwOyW5Dw/T/5ki2fPc8y1+Elf2ms/prpy6Sw==");
-        $this->response(array("status"=>$gen));
+    	if($this->session->access == null)
+	{
+	    //$this->response(array("status"=>0));
+	    exit(json_encode(array("status"=>0)));     
+	}   	
     }
     function createNXT_get()
     {
+	$this->_sessionRestrict();
         $autoGen = $this->encrypt->encode(rand(1000,100000));
         try {
             $ch = curl_init();
@@ -44,7 +52,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
             if (FALSE === $ch)
                 throw new Exception('failed to initialize');
 
-            curl_setopt($ch, CURLOPT_URL, 'http://91.235.72.49:7876/nxt?requestType=getAccountId&secretPhrase='.$autoGen);
+            curl_setopt($ch, CURLOPT_URL, $this->nxt_server.'/nxt?requestType=getAccountId&secretPhrase='.$autoGen);
             curl_setopt($ch, CURLOPT_HEADER, false);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
@@ -67,6 +75,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
     }
     function validNXT_post()
     {
+	$this->_sessionRestrict();
         $autoGen = $this->input->post("address");
         try {
             $ch = curl_init();
@@ -74,7 +83,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
             if (FALSE === $ch)
                 throw new Exception('failed to initialize');
 
-            curl_setopt($ch, CURLOPT_URL, 'http://91.235.72.49:7876/nxt?=%2Fnxt&requestType=getAccount&account='.$autoGen);
+            curl_setopt($ch, CURLOPT_URL, $this->nxt_server.'/nxt?=%2Fnxt&requestType=getAccount&account='.$autoGen);
             curl_setopt($ch, CURLOPT_HEADER, false);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
@@ -102,8 +111,9 @@ class Rest extends \Restserver\Libraries\REST_Controller {
     }
     function saveNXT_post()
     {
+	$this->_sessionRestrict();
         $this->load->model("acc");
-        $configuration = Configuration::apiKey("bOFtsDfxvaDZ7wzW", "aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
+        $configuration = Configuration::apiKey($this->apiKey, $this->secretApi);
         $client = Client::create($configuration);
         $addr = $this->input->post("nxt_address",true);
         if($addr != null)
@@ -136,6 +146,24 @@ class Rest extends \Restserver\Libraries\REST_Controller {
             $this->response(array("status"=>0,"msg"=>"Address is Null Please Wait"));
         }
         
+    }
+    function showTrx_get()
+    {
+	$this->_sessionRestrict();
+	$configuration = Configuration::apiKey($this->apiKey, $this->secretApi);
+        $client = Client::create($configuration);
+	$client->getAccounts();
+	$data = $client->decodeLastResponse()["data"];
+	$id_acc = "";
+	foreach($data as $list_key => $value){
+	   if($value["name"] == $this->session->nxt_address){
+		//echo "Found It : ".$this->session->nxt_address;break;
+		$id_acc =  Account::reference($value["id"]);
+	   }
+	 //print_r($value);break;
+	}
+	$client->getAccountTransactions($id_acc);
+	$this->response($client->decodeLastResponse());
     }
     function login_post()
     {

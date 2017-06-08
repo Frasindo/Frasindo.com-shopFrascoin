@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
+<script>
+    var base_url = "<?= base_url() ?>";
+</script>
   <header class="main-header">
 
     <!-- Logo -->

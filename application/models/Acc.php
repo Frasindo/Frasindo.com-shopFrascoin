@@ -23,4 +23,7 @@ class Acc extends CI_Model {
             return false;
         }
     }
+    function totalParticipant(){
+    	return $this->db->get("user_info")->num_rows();
+    }
 }

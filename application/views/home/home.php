@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Total Invested</span>
-                            <span class="info-box-number">441.696033</span>
+                            <span class="info-box-number"><?= $data["totalInvest"] ?></span>
                             <span class="info-box-text">BTC</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <span class="info-box-icon bg-red"><i class="fa fa-user"></i></span>
                         <div class="info-box-content">
                              <span class="info-box-text">Total Participants</span>
-                            <span class="info-box-number">619</span>
+                            <span class="info-box-number"><?= $data["tp"] ?></span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -69,8 +69,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="nav-tabs-custom">
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#dash" data-toggle="tab">Dashboard</a></li>
-                                            <li><a href="#myaccount" data-toggle="tab">My Account</a></li>
-                                            <li><a href="#whitepapper" data-toggle="tab">Whitepapper</a></li>
+                                            <li><a href="#myaccount" class = "myaccount" data-toggle="tab">My Account</a></li>
+                                            <li><a href="#whitepapper"  data-toggle="tab">Whitepapper</a></li>
                                             <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
                                             <li><a href="#escrow" data-toggle="tab">Escrow Details</a></li>
                                         </ul>
@@ -79,10 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <div class="row">
                                                 <div class="col-md-6">
                                                     <h3>Your NXT Account</h3>
-                                                    <h4><?= $data["nxt_address"] ?></h4>
-                                                    <form action="" method="post">
-                                                    <p><button type="submit" class="btn btn-info" name="changeNXT">Change</button></p>
-                                                    </form>
+                                                    <h4><?= $data["nxt_address"] ?></h4>                                                                         
                                                     <h3>Your Share</h3>
                                                     <h4 id="vot_pow">0.000% Voting power</h4>
                                                     <h3>Frascoin</h3>
@@ -122,20 +119,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             <th>Transaction</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="trx">
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td>Dumy</td>
-                                                            <td>Lol</td>
-                                                            <td>Blah</td>
-                                                            <td>10%</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
                                                         </tr>
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
                                                             <th>Total BTC</th>
-                                                            <th>000000</th>
-                                                            <th>000000</th>
+                                                            <th colspan="2" id="btctotal">000000 BTC</th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>

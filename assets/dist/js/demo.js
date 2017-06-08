@@ -370,6 +370,29 @@ $(function () {
         setInterval(function () {
                     getData();
         }, 4000);
+	$(".myaccount").click(function() {
+	 setTimeout(function(){
+            $.get(base_url+"rest/showTrx", function(data) {
+		var trx = "";
+		var btcTotal = 0;
+		for(var i = 0; i < data.data.length; i++)
+		{
+		   var no = i+1;
+		   var time = new Date(data.data[i].created_at);
+	    	   trx +="<tr>";
+		   trx +="<td>"+no+"</td>";
+		   trx +="<td>"+time.getDate()+"/"+time.getMonth()+"/"+time.getFullYear()+"</td>";
+		   trx +="<td>"+data.data[i].amount.amount+"</td>";
+		   trx +="<td>"+0+"</td>";
+		   trx +="<td>"+data.data[i].network.hash+" <span class='label label-info'>"+data.data[i].network.status+"</span></td>";
+		   trx +="</tr>";
+		   btcTotal = btcTotal+parseFloat(data.data[i].amount.amount).toFixed(8);
+		}
+		$("#btctotal").html(btcTotal);
+		$("#trx").html(trx);	
+  	    });
+	 },500);
+	});
     }
 var checking = document.getElementById('new_nxt');
 if(checking != null)
