@@ -42,6 +42,73 @@ class Rest extends \Restserver\Libraries\REST_Controller {
 	    exit(json_encode(array("status"=>0)));     
 	}   	
     }
+    function ticker_get()
+    {
+	$dbRate = $this->db->get("rate");
+	$dbBTCUSD = (float)$dbRate->result()[0]->btcusd;
+	$dbUSDIDR = (float)$dbRate->result()[0]->usdidr;
+	$dbFRASCOIN = $dbRate->result()[0]->frascoin;
+	$configuration = Configuration::apiKey($this->apiKey, $this->secretApi);
+	$client = Client::create($configuration);
+	$sellPrice = $client->getSellPrice('BTC-USD');
+	$btcUSD = (float)$client->decodeLastResponse()["data"]["amount"];
+	$client->getExchangeRates("USD");
+	$usdIDR = (float)$client->decodeLastResponse()["data"]["rates"]["IDR"];
+	$frs =  (float)((((150000000+((150000000/100)*3)) / $usdIDR) / $btcUSD) / 150000);
+	$frs = number_format($frs,8);
+	if($btcUSD > $dbBTCUSD)
+	{
+	    $this->db->where("id_rate",1);
+	    $this->db->update("rate",array("btcusd"=>$btcUSD));
+	    $iconBTCUSD = "fa fa-caret-up up";
+	}elseif($btcUSD < $dbBTCUSD)
+	{
+	    $this->db->where("id_rate",1);
+            $this->db->update("rate",array("btcusd"=>$btcUSD));
+            $iconBTCUSD = "fa fa-caret-down down";
+	}else{
+	    $this->db->where("id_rate",1);
+            $this->db->update("rate",array("btcusd"=>$btcUSD));
+            $iconBTCUSD = "fa fa-minus";
+	}
+	$btcIDR = floatval($btcUSD * $usdIDR); 
+	if($btcIDR > $dbUSDIDR)
+        {
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("usdidr"=>$btcIDR));
+            $iconUSDIDR = "fa fa-caret-up up";
+        }elseif($btcIDR < $dbUSDIDR)
+        {
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("usdidr"=>$btcIDR));
+            $iconUSDIDR = "fa fa-caret-down down";
+        }else{
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("usdidr"=>$btcIDR));
+            $iconUSDIDR = "fa fa-minus";
+        }
+	//var_dump(array("icon"=>$iconUSDIDR,"non-db"=>$btcIDR,"db"=>$dbUSDIDR));
+	//echo $iconUSDIDR.$btcIDR."-".$dbUSDIDR;
+	 if($frs > $dbFRASCOIN)
+        {
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("frascoin"=>$frs));
+            $iconFRASCOIN = "fa fa-caret-up up";
+        }elseif($frs < $dbFRASCOIN)
+        {
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("frascoin"=>$frs));
+            $iconFRASCOIN = "fa fa-caret-down down";
+        }else{
+            $this->db->where("id_rate",1);
+            $this->db->update("rate",array("frascoin"=>$frs));
+            $iconFRASCOIN = "fa fa-minus";
+        }
+	//var_dump(array("icon"=>$iconFRASCOIN,"non-db"=>$frs,"db"=>$dbFRASCOIN));
+	$this->response(array("IDR"=>array("icon"=>$iconUSDIDR,"value"=>$btcIDR),"USD"=>array("icon"=>$iconBTCUSD,"value"=>$btcUSD),"FRAS"=>array("icon"=>$iconFRASCOIN,"value"=>$frs)));
+
+		
+    }
     function createNXT_get()
     {
 	$this->_sessionRestrict();

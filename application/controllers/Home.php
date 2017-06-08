@@ -22,6 +22,7 @@ class Home extends CI_Controller {
                     ob_end_clean();
                     $totalPartisipan = $this->acc->totalParticipant();
 		    $Tinvest = number_format($this->bill->totalInvest("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG"),8);
+		    
                     $data["data_page"] = array("data"=>array("btc_address"=>$this->session->btc_address,"totalInvest"=>$Tinvest,"tp"=>$totalPartisipan,"nxt_address"=>$this->session->nxt_address,"qr_code"=>$imageString));
                     $data["page"] = "home/home";
                     $this->load->view("adminLTE/_header",$data);

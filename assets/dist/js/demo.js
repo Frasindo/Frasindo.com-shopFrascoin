@@ -368,8 +368,8 @@ $(function () {
 
         }, 1000);
         setInterval(function () {
-                    getData();
-        }, 4000);
+              getData();
+        }, 10000);
 	$(".myaccount").click(function() {
 	 setTimeout(function(){
             $.get(base_url+"rest/showTrx", function(data) {
@@ -454,15 +454,19 @@ if(checking != null)
 
 function getData() {
         console.log("Update Data . .");
-        $.get("http://localhost/coinbase/ajax.php", function(data) {
+        $.get(base_url+"rest/ticker", function(data) {
             console.log("Get Data");
-            var jsonData = jQuery.parseJSON(data);
+       	    var jsonData = data;
             console.log(jsonData);
             $("#dollar_class").removeAttr("class");
             $("#idr_class").removeAttr("class");
+	    $("#frs_class").removeAttr("class");
             $("#dollar_class").attr("class",jsonData.USD.icon);
             $("#idr_class").attr("class",jsonData.IDR.icon);
+	    $("#frs_class").attr("class",jsonData.FRAS.icon);
             $("#dollar_value").html(jsonData.USD.value);
             $("#idr_value").html(jsonData.IDR.value);
+            $("#frs_value").html(jsonData.FRAS.value);
+
         });
 }
