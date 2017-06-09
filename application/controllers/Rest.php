@@ -71,7 +71,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
             $this->db->update("rate",array("btcusd"=>$btcUSD));
             $iconBTCUSD = "fa fa-minus";
 	}
-	$btcIDR = floatval($btcUSD * $usdIDR); 
+	$btcIDR = $btcUSD * $usdIDR; 
 	if($btcIDR > $dbUSDIDR)
         {
             $this->db->where("id_rate",1);
@@ -104,9 +104,9 @@ class Rest extends \Restserver\Libraries\REST_Controller {
             $this->db->update("rate",array("frascoin"=>$frs));
             $iconFRASCOIN = "fa fa-minus";
         }
-	//var_dump(array("icon"=>$iconFRASCOIN,"non-db"=>$frs,"db"=>$dbFRASCOIN));
+	//var_dump(array("icon"=>$iconUSDIDR,"non-db"=>$btcIDR,"db"=>$dbUSDIDR));
 	$this->response(array("IDR"=>array("icon"=>$iconUSDIDR,"value"=>$btcIDR),"USD"=>array("icon"=>$iconBTCUSD,"value"=>$btcUSD),"FRAS"=>array("icon"=>$iconFRASCOIN,"value"=>$frs)));
-
+	
 		
     }
     function createNXT_get()
