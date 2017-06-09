@@ -81,9 +81,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <h3>Your NXT Account</h3>
                                                     <h4><?= $data["nxt_address"] ?></h4>                                                                         
                                                     <h3>Your Share</h3>
-                                                    <h4 id="vot_pow">0.000% Voting power</h4>
+                                                    <h4 id="vot_pow"><?= $data["votingPower"] ?>% Voting power</h4>
                                                     <h3>Frascoin</h3>
-                                                    <h4 id="fras">0.000</h4>
+                                                    <h4 id="fras"><?= $data["myFras"] ?></h4>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h3>Your ICO Address</h3>

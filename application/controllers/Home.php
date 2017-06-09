@@ -9,6 +9,9 @@ class Home extends CI_Controller {
         {
 	    $this->load->model("acc");
 	    $this->load->model("bill");
+	    $rateFras = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->frascoin;
+	    $rateIDR = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->usdidr;
+	    $myFund = $this->bill->getWallet("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
             $data["judul"] = "Home";
             $data["menu"] = array("data"=>array((object)array("link"=>base_url(),"nama_link"=>"Home","icon"=>"fa fa-home","disable"=>false),(object)array("link"=>base_url(),"nama_link"=>"Account","icon"=>"fa fa-user","disable"=>true),(object)array("link"=>base_url(),"nama_link"=>"Forum","icon"=>"fa fa-comments","disable"=>true),(object)array("link"=>base_url("logout"),"nama_link"=>"Logout","icon"=>"fa fa-sign-out","disable"=>false)));
             if($this->session->access == 0)
@@ -21,9 +24,12 @@ class Home extends CI_Controller {
                     $imageString = base64_encode( ob_get_contents() );
                     ob_end_clean();
                     $totalPartisipan = $this->acc->totalParticipant();
-		    $Tinvest = number_format($this->bill->totalInvest("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG"),8);
-		    
-                    $data["data_page"] = array("data"=>array("btc_address"=>$this->session->btc_address,"totalInvest"=>$Tinvest,"tp"=>$totalPartisipan,"nxt_address"=>$this->session->nxt_address,"qr_code"=>$imageString));
+		    $fixedFras = $this->bill->getFixedFras();
+		    $investTotal = $this->bill->totalInvest("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
+		    $Tinvest = number_format($investTotal,8); 
+		    $myFras = ($myFund*$rateIDR) / ($rateFras*$rateIDR);
+		    //var_dump(array("rate"=>$rateFras,"myFund"=>$myFund,"myFras"=>number_format($myFras,8)));
+                    $data["data_page"] = array("data"=>array("btc_address"=>$this->session->btc_address,"myFras"=>$myFras,"votingPower"=>number_format(($myFras/$fixedFras)*100,2),"totalInvest"=>$Tinvest,"tp"=>$totalPartisipan,"nxt_address"=>$this->session->nxt_address,"qr_code"=>$imageString));
                     $data["page"] = "home/home";
                     $this->load->view("adminLTE/_header",$data);
                     $this->load->view("adminLTE/_home",$data);

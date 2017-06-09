@@ -26,6 +26,40 @@ class Bill extends CI_Model {
        }
     	return $subJumlah; 	    
     }
+    function getFixedFras()
+    {
+    	$db = $this->db->get_where("fixed",array("id"=>1))->result()[0]->frascoin;
+	return $db;
+    }
+    function getWallet($apiKey,$secretApi)
+    {
+	$configuration = Configuration::apiKey($apiKey, $secretApi);
+        $client = Client::create($configuration);
+        $client->getAccounts();
+        $subJumlah = 0;
+        $data = $client->decodeLastResponse()["data"];
+	$id_acc = "";
+        foreach($data as $list_key => $value){
+	     if($this->session->nxt_address == $value["name"]){
+	        $id_acc =  Account::reference($value["id"]);
+	        break;
+	     }
+	}
+	if($id_acc != null)
+	{
+	  $client->getAccountTransactions($id_acc);
+	  $subJumlah = 0;
+          foreach($client->decodeLastResponse()["data"] as $dataWallet)
+          {
+
+            $subJumlah = $subJumlah + (float) $dataWallet["amount"]["amount"];
+          }
+	   return $subJumlah;
+	}else{
+	   return 0;
+	}
+
+    }
 }
 ?>
 
