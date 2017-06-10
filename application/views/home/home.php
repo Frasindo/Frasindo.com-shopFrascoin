@@ -69,10 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="nav-tabs-custom">
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#dash" data-toggle="tab">Dashboard</a></li>
-                                            <li><a href="#myaccount" class = "myaccount" data-toggle="tab">My Account</a></li>
-                                            <li><a href="#whitepapper"  data-toggle="tab">Whitepapper</a></li>
-                                            <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
-                                            <li><a href="#escrow" data-toggle="tab">Escrow Details</a></li>
+                                            <li><a href="#myaccount" class = "myaccount" data-toggle="tab">Fund History</a></li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="dash">
@@ -138,32 +135,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     </tfoot>
                                                 </table>
                                             </div>
-                                            <div class="tab-pane" id="whitepapper">
-                                                <p>Wah</p>
-                                            </div>
-                                            <div class="tab-pane" id="instructions">
-                                                
-                                                <p _ngcontent-c9="" class="bold">
-                                                    Here are step by step instructions of how to contribute funds to the Adel ICO, as well as navigation throughout the various ICO module tabs:
-                                                </p>
-
-                                                <p _ngcontent-c9="">1. <span _ngcontent-c9="">The first step is to click "ICO Contribution" on the Adel homepage at <a _ngcontent-c9="" href="https://adelphoi.io">https://adelphoi.io</a>, then click "Create a new account" in the bottom right corner. Enter your details and click “I accept the Adel ICO Terms &amp; Conditions”. Click “I hereby declare that the above information is true and correct”, and click that you are not a robot (i.e. reCaptcha API), then “Register”. Then go to your email application and wait for a message from Adel to validate your email address. Once you have clicked the provided link in the email message, you will be redirected back to the <a _ngcontent-c9="" href="https://ico.adelphoi.io">https://ico.adelphoi.io</a> website so you can login to your new Adel ICO account. </span>
-                                                </p>
-                                                <p _ngcontent-c9="">2. <span _ngcontent-c9="">Your next step is to set up a new Nxt account, or enter your existing Nxt address if you already have one. (You need a Nxt address since Adel uses the Nxt blockchain). <b _ngcontent-c9="" style="color: red">Make sure you save secret in a safe location</b> because these details will not be displayed again. </span>
-                                                </p>
-                                                <p _ngcontent-c9="">3. <span _ngcontent-c9="">Then you will be directed to the ICO Dashboard tab. Here you will see your Nxt address on the left, and your new ICO address on the right. This ICO address is your unique BTC address for all of your ICO contributions. A Qr (Quick response) code is also provided so that you can easily transfer your ICO address to your mobile phone. You need to use this ICO address to send BTC from your bitcoin wallet (If you don’t already have one, then you can set up a new account with Kraken, Coinbase, Changelly, Shapeshift, or Cubits. We have provided walkthrough documents on our home page to help you with this process, and convert your fiat currency or other cryptocurrencies to BTC). </span>
-                                                </p>
-                                                <p _ngcontent-c9="">4. <span _ngcontent-c9="">In the Dashboard tab, you can contribute funds to the ICO using the Shapeshift or Changelly APIs provided. The Dashboard tab also displays your overall BTC balance for all your contributions throughout the ICO. You can also see your voting power and overall ADL balance. Note that your voting power and ADL balance will decrease over time throughout the ICO. This is normal because other contributing funds further distribute the ADL coins and voting weight amongst new participants. You can increase your voting power and ADL balance by submitting additional BTC. </span></p>
-                                                <p _ngcontent-c9="">5. <span _ngcontent-c9="">In the Account tab, you can view the history of all your BTC transactions, voting bonuses, and an equivalent amount in Euros. Your voting bonus increases your voting power, as well as the number of ADL coins you will receive at the end of the ICO.</span>
-                                                </p>
-                                                <p _ngcontent-c9="">6. <span _ngcontent-c9="">The Identification tab displays your personal details. As your balance passes certain thresholds, then additional credentials will be needed to meet Adel’s Anti-Money Laundering policy (this is a legal requirement for the Isle of Man regulators). If you pass a contribution threshold of 1 BTC, then your phone number, birthday, and a scanned copy of your passport or ID will be required in order to pass Anti-Money Laundering procedures. If your contribution passes 20 BTC, then your address of residence and a scanned copy of your utility bill (displaying your name and address of residence) will be required. You can edit your details at any time throughout the ICO (except for your email address since each ICO account requires a unique email address). Once you have edited your details, then check the verification and authorization boxes and save your details. Scanned documents, such as your government-issued passport / ID and utility bills, will be verified by Adel. Your Identification status will remain “Pending” while your documents are being validated by AML Officers. If there is a discrepancy in the details you submitted, then you will receive a message from Adel to update your credentials until they are accepted by the AML Officer. If your credentials are not corrected by the end of the ICO on May 31st, 2017, then your funds will be returned to you if you have provided a BTC return address under the settings <i _ngcontent-c9="" class="fa fa-cog iconbutton orange" routerlink="settings" tabindex="0"></i>
- menu. </span>
-                                                </p>
-                                            </div>
-                                            <div class="tab-pane" id="escrow">
-                                                <p>escrow details</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 

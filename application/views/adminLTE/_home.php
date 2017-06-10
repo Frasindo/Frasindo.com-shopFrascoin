@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </nav>
   </header>
   <!-- Menu -->
-  <?php $this->load->view("adminLTE/_nav",$menu); ?>
+  <?php $this->load->view("adminLTE/_nav"); ?>
   <?php $this->load->view($page,$data_page); ?>
 
   
