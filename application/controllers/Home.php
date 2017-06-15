@@ -12,15 +12,15 @@ class Home extends CI_Controller {
 	{
         if($this->session->access != null)
         {
-	    $this->load->model("acc");
-	    $this->load->model("bill");
-	    $rateFras = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->frascoin;
-	    $rateIDR = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->usdidr;
-	    $myFund = $this->bill->getWallet("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
+            $this->load->model("acc");
+            $this->load->model("bill");
+            $rateFras = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->frascoin;
+            $rateIDR = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->usdidr;
+            $myFund = $this->bill->getWallet("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
             $data["judul"] = "Home";
-            
             if($this->session->access == 0)
             {
+                if($this->session->authy == 0 or $this->session->authyConfirm != null){
                 if($this->session->avatar != null)
                 {
                     $data["user_info"] = array("nama"=>$this->session->nama,"picture"=>base_url($this->session->avatar));
@@ -89,6 +89,28 @@ class Home extends CI_Controller {
                     $this->load->view("setAvatar/_header",$data);
                     $this->load->view("setAvatar/_home",$data);
                     $this->load->view("setAvatar/_footer");
+                }
+                }else{
+                    $this->load->model("update");
+                    if(isset($_POST["setAuth"]))
+                    {
+                        print_r($this->session->authy);
+                        $code = $this->input->post("authy",true);
+                        $read = $this->update->read_user(array("login_id"=>$this->session->id_login))->result()[0];
+                        $checkResult = $this->googleauthenticator->verifyCode($read->tokenTwofactor,$code);
+                        if($checkResult)
+                        {
+                            $this->session->set_userdata("authyConfirm",1);
+                            redirect(base_url(),'refresh');
+                        }else{
+                            $this->session->set_userdata("authyConfirm",NULL);
+                            $data["alert"] = $this->upload_lib->alert("danger","Request Failed","Your 2FA is Wrong, Try Again");
+                        }
+                    }
+                    $data["judul"] = "2FA Challange";
+                    $this->load->view("setAvatar/_header.php",$data);
+                    $this->load->view("authy/_authy.php",$data);
+                    $this->load->view("setAvatar/_footer.php",$data);
                 }
             }elseif($this->session->access == 1)
             {

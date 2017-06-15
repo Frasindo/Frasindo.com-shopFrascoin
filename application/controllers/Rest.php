@@ -252,6 +252,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
                 $this->session->set_userdata("avatar",$loginData->avatar);
                 $this->session->set_userdata("username",$loginData->username);
                 $this->session->set_userdata("nama",$loginData->nama);
+                $this->session->set_userdata("authy",$loginData->authy);
             }
             $this->response($data);
         }else{

@@ -13,9 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="row">
                                 <!-- left column -->
                                 <div class="col-md-3">
+                                    <div class="row">
                                     <div class="text-center">
                                     <img src="<?= $user_info["picture"] ?>" class="avatar img-circle img-responsive" alt="avatar">
                                     <a href="<?= base_url("page/account/?reset") ?>" class="btn btn-success">Upload</a>
+                                    </div>
                                     </div>
                                 </div>
                                 <!-- edit form column -->
@@ -68,6 +70,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </select>
                                         </div>
                                         </div>
+                                        <?php if($data_page->twofactor == 1){?>
+                                        <div class="col-lg-12">
+                                         <div class="text-center">
+                                             <p>Scan Barcode 2FA</p>
+                                            <img src="<?= (isset($authy))?$authy:null ?>" width="30%" heigth="auto" class="avatar img-responive" alt="Google Auth">
+                                         </div>
+                                        </div>
+                                        <?php } ?>
                                     </div>
                                     
                                     <div class="form-group">

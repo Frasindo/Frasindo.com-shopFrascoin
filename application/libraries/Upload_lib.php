@@ -7,6 +7,11 @@ class Upload_lib {
                 return 'data:image/'.$filetype.';base64,'.base64_encode($imgbinary);
             }
         }
+        function alihkan($url,$time)
+        {
+            $redir = "<script>setTimeout(function () {window.location.replace('" . $url . "');},".$time.")</script>";
+            return $redir;
+        }
         function upload_file($target_direktori,$files,$allowed_files,$prefix_name="")
         {
             $target_dir = $target_direktori;
