@@ -1,7 +1,14 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
+        <div class="user-panel">
+        <div class="pull-left image">
+          <img src="<?= $user_info["picture"] ?>" class="img-circle" alt="<?= (isset($user_info["nama"]))?$user_info["nama"]:"No Name" ?>">
+        </div>
+        <div class="pull-left info">
+          <p><?= (isset($user_info["nama"]))?$user_info["nama"]:"No Name" ?></p>
+        </div>
+      </div>
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li>
@@ -44,7 +51,7 @@
                 </a>
             </li>
             <li>
-                <a href="<?= base_url() ?>">
+                <a href="<?= base_url("page/account") ?>">
                     <i class="fa fa-user"></i> <span>Account Setting</span>
                 </a>
             </li>

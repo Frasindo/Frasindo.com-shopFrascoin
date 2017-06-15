@@ -19,7 +19,7 @@ class Auth extends CI_Model {
                 $adminInfo = $this->db->get_where("admin_info",array("login_id"=>$checkUser->result()[0]->id_login));
                 if($checkUser->result()[0]->access == 0)
                 {
-                    return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("access"=>$checkUser->result()[0]->access,"btc_address"=>$userInfo->result()[0]->btc_address,"nxt_address"=>$userInfo->result()[0]->nxt_address,"id_login"=>$checkUser->result()[0]->id_login ,"email"=>$checkUser->result()[0]->email));
+                    return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("avatar"=>$userInfo->result()[0]->avatar,"nama"=>$userInfo->result()[0]->nama,"username"=>$checkUser->result()[0]->user_identity,"access"=>$checkUser->result()[0]->access,"btc_address"=>$userInfo->result()[0]->btc_address,"nxt_address"=>$userInfo->result()[0]->nxt_address,"id_login"=>$checkUser->result()[0]->id_login ,"email"=>$checkUser->result()[0]->email));
                 }elseif($checkUser->result()[0]->access == 1)
                 {
                     return array("status"=>1,"msg"=>"Login Success","data"=>(object)array("access"=>$checkUser->result()[0]->access,"name"=>$adminInfo->result()[0]->nama,"email"=>$checkUser->result()[0]->email));
@@ -32,19 +32,19 @@ class Auth extends CI_Model {
             
         }
     }
-    function register($email,$password)
+    function register($email,$password,$nama,$user,$wa,$line,$bd)
     {
         $checkUser = $this->db->get_where("login",array("email"=>$email))->num_rows();
         if($checkUser < 1)
         {
-            $insert = $this->db->insert("login",array("email"=>$email,"password"=>$this->encrypt->encode($password)));
+            $insert = $this->db->insert("login",array("user_identity"=>$user,"email"=>$email,"password"=>$this->encrypt->encode($password)));
         }else{
             $insert = false;
         }
         if($insert)
         {
              $lastID = $this->db->insert_id();
-             $insertUser = $this->db->insert("user_info",array("login_id"=>$lastID,"nxt_address"=>"0"));
+             $insertUser = $this->db->insert("user_info",array("lineid"=>$line,"wa"=>$wa,"birth"=>$bd,"nama"=>$nama,"login_id"=>$lastID,"nxt_address"=>"0"));
              if($insertUser)
              {
                  return array("status"=>1,"msg"=>"Register Successfull");

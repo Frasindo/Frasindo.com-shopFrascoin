@@ -27,6 +27,7 @@
 <script>
 //Jvector
 $(function() {
+ $('#bd').datepicker();
   $('.daterange').daterangepicker({
     ranges   : {
       'Today'       : [moment(), moment()],

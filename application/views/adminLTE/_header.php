@@ -15,7 +15,7 @@
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?= base_url("assets/") ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Theme style -->
- <link rel="stylesheet" href="<?= base_url("assets/") ?>plugins/datepicker/datepicker3.css">
+  <link rel="stylesheet" href="<?= base_url("assets/") ?>plugins/datepicker/datepicker3.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="<?= base_url("assets/") ?>plugins/daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="<?= base_url("assets/") ?>costum.css">

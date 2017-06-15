@@ -247,8 +247,11 @@ class Rest extends \Restserver\Libraries\REST_Controller {
                 $this->session->set_userdata("id_login",$loginData->id_login);
                 $this->session->set_userdata("access",$loginData->access);
                 $this->session->set_userdata("nxt_address",$loginData->nxt_address);
-		$this->session->set_userdata("btc_address",$loginData->btc_address);
+		        $this->session->set_userdata("btc_address",$loginData->btc_address);
                 $this->session->set_userdata("email",$loginData->email);
+                $this->session->set_userdata("avatar",$loginData->avatar);
+                $this->session->set_userdata("username",$loginData->username);
+                $this->session->set_userdata("nama",$loginData->nama);
             }
             $this->response($data);
         }else{
@@ -259,11 +262,16 @@ class Rest extends \Restserver\Libraries\REST_Controller {
     {
         $this->load->model("auth");
         $email = $this->input->post("email",true);
+        $nama = $this->input->post("nama",true);
+        $user = $this->input->post("user",true);
+        $wa = $this->input->post("wa",true);
+        $line = $this->input->post("line",true);
+        $bd = $this->input->post("birthday",true);
         $pass = base64_decode($this->input->post("pass",true));
         $validate = filter_var($email, FILTER_VALIDATE_EMAIL);
         if($validate == true)
         {
-            $data = $this->auth->register($email,$pass);
+            $data = $this->auth->register($email,$pass,$nama,$user,$wa,$line,$bd);
             $this->response($data);
         }else{
             $this->response(array("status"=>0,"msg"=>"Email Not Valid"));
