@@ -32,7 +32,6 @@ class Page extends CI_Controller {
             if($this->input->post("twofactor",true) == 0)
             {
                 $delete = $this->update->update_user($this->session->id_login,array("tokenTwofactor"=>""));
-                var_dump($delete);
             }
             $update = $this->update->update_user($this->session->id_login,$data);
             if($update)

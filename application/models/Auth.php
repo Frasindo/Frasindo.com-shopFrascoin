@@ -32,7 +32,7 @@ class Auth extends CI_Model {
             
         }
     }
-    function register($email,$password,$nama,$user,$wa,$line,$bd)
+    function register($email,$password,$nama,$user)
     {
         $checkUser = $this->db->get_where("login",array("email"=>$email))->num_rows();
         if($checkUser < 1)
@@ -44,7 +44,7 @@ class Auth extends CI_Model {
         if($insert)
         {
              $lastID = $this->db->insert_id();
-             $insertUser = $this->db->insert("user_info",array("lineid"=>$line,"wa"=>$wa,"birth"=>$bd,"nama"=>$nama,"login_id"=>$lastID,"nxt_address"=>"0"));
+             $insertUser = $this->db->insert("user_info",array("login_id"=>$lastID,"nxt_address"=>"0"));
              if($insertUser)
              {
                  return array("status"=>1,"msg"=>"Register Successfull");

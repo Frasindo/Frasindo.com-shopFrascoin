@@ -42,24 +42,20 @@ $(function() {
     });
     $("#register").click(function() {
         $("#register").attr("disabled",true);
-        var nama = $("#exName").val();
-        var birth = $("#exBd").val();
-        var wa = $("#exWa").val();
-        var line = $("#exLine").val();
         var username = $("#exUser").val();
         var emailA = $("#exEmail").val();
         var emailR = $("#exEmailR").val();
         var passwordA = $("#exPassword").val();
         var passwordR = $("#exPasswordR").val();
         $.base64.utf8encode = true;
-        if(passwordR != "" && passwordA != "" &&  nama != "" && birth != "" && line != "" && $.isNumeric(wa)  && username != "" && emailA != "" && emailR != "")
+        if(passwordR != "" && passwordA != ""  && username != "" && emailA != "" && emailR != "")
         {
             if(passwordR == passwordA && emailA == emailR)
             {
                 var password = $.base64.encode(passwordA, true);
                 var email = emailA;
                 setTimeout(function(){
-                $.post("<?= base_url("rest/register") ?>", {birthday:birth,line:line,wa:wa,user:username,nama:nama,email: email,pass : password}, function(result){
+                $.post("<?= base_url("rest/register") ?>", {user:username,email: email,pass : password}, function(result){
                     console.log(result);
                     $("#alert").removeAttr("class");
                     $("#alert").html("");
