@@ -26,7 +26,7 @@ $(function() {
                 {
                     $("#alert").addClass("alert alert-success");
                     $("#alert").html(result.msg);
-                    setTimeout(function(){window.location="<?= base_url() ?>";},2000);
+                    setTimeout(function(){window.location="<?= base_url("shop") ?>";},2000);
                 }else{
                     $("#alert").addClass("alert alert-danger");
                     $("#alert").html(result.msg);

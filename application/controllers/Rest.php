@@ -44,10 +44,14 @@ class Rest extends \Restserver\Libraries\REST_Controller {
     }
     function ticker_get()
     {
-	$dbRate = $this->db->get("rate");
+	$dbRate = $this->db->get_where("rate",array("id_rate"=>1));
 	$dbBTCUSD = (float)$dbRate->result()[0]->btcusd;
 	$dbUSDIDR = (float)$dbRate->result()[0]->usdidr;
 	$dbFRASCOIN = $dbRate->result()[0]->frascoin;
+    $LastdbRate = $this->db->get_where("rate",array("id_rate"=>2));
+	$LastdbBTCUSD = $LastdbRate->result()[0]->btcusd;
+	$LastdbUSDIDR = $LastdbRate->result()[0]->usdidr;
+	$LastdbFRASCOIN = $LastdbRate->result()[0]->frascoin;
 	$configuration = Configuration::apiKey($this->apiKey, $this->secretApi);
 	$client = Client::create($configuration);
 	$sellPrice = $client->getSellPrice('BTC-USD');
@@ -59,55 +63,69 @@ class Rest extends \Restserver\Libraries\REST_Controller {
 	if($btcUSD > $dbBTCUSD)
 	{
 	    $this->db->where("id_rate",1);
-	    $this->db->update("rate",array("btcusd"=>$btcUSD));
+        $this->db->update("rate",array("btcusd"=>$btcUSD));
 	    $iconBTCUSD = "fa fa-caret-up up";
-	}elseif($btcUSD < $dbBTCUSD)
-	{
-	    $this->db->where("id_rate",1);
-            $this->db->update("rate",array("btcusd"=>$btcUSD));
-            $iconBTCUSD = "fa fa-caret-down down";
+        $this->db->where("id_rate",2);
+        $this->db->update("rate",array("btcusd"=>$iconBTCUSD));
+	}elseif($btcUSD < $dbBTCUSD){
+        $this->db->where("id_rate",1);
+        $this->db->update("rate",array("btcusd"=>$btcUSD));
+        $iconBTCUSD = "fa fa-caret-down down";
+        $this->db->where("id_rate",2);
+        $this->db->update("rate",array("btcusd"=>$iconBTCUSD));
 	}else{
-	    $this->db->where("id_rate",1);
-            $this->db->update("rate",array("btcusd"=>$btcUSD));
-            $iconBTCUSD = "fa fa-minus";
+       $iconBTCUSD = $LastdbBTCUSD;
 	}
+    
 	$btcIDR = $btcUSD * $usdIDR; 
-	if($btcIDR > $dbUSDIDR)
+	    if($btcIDR > $dbUSDIDR)
         {
             $this->db->where("id_rate",1);
             $this->db->update("rate",array("usdidr"=>$btcIDR));
             $iconUSDIDR = "fa fa-caret-up up";
+            $this->db->where("id_rate",2);
+            $this->db->update("rate",array("usdidr"=>$iconUSDIDR));
         }elseif($btcIDR < $dbUSDIDR)
         {
             $this->db->where("id_rate",1);
             $this->db->update("rate",array("usdidr"=>$btcIDR));
             $iconUSDIDR = "fa fa-caret-down down";
+            $this->db->where("id_rate",2);
+            $this->db->update("rate",array("usdidr"=>$iconUSDIDR));
         }else{
-            $this->db->where("id_rate",1);
-            $this->db->update("rate",array("usdidr"=>$btcIDR));
-            $iconUSDIDR = "fa fa-minus";
+           $iconUSDIDR = $LastdbUSDIDR;
         }
+        
+            
 	//var_dump(array("icon"=>$iconUSDIDR,"non-db"=>$btcIDR,"db"=>$dbUSDIDR));
 	//echo $iconUSDIDR.$btcIDR."-".$dbUSDIDR;
-	 if($frs > $dbFRASCOIN)
+	    if($frs > $dbFRASCOIN)
         {
             $this->db->where("id_rate",1);
             $this->db->update("rate",array("frascoin"=>$frs));
             $iconFRASCOIN = "fa fa-caret-up up";
+            $this->db->where("id_rate",2);
+            $this->db->update("rate",array("frascoin"=>$iconFRASCOIN));
         }elseif($frs < $dbFRASCOIN)
         {
             $this->db->where("id_rate",1);
             $this->db->update("rate",array("frascoin"=>$frs));
             $iconFRASCOIN = "fa fa-caret-down down";
+            $this->db->where("id_rate",2);
+            $this->db->update("rate",array("frascoin"=>$iconFRASCOIN));
         }else{
-            $this->db->where("id_rate",1);
-            $this->db->update("rate",array("frascoin"=>$frs));
-            $iconFRASCOIN = "fa fa-minus";
+            $iconFRASCOIN = $LastdbFRASCOIN;
         }
+        
 	//var_dump(array("icon"=>$iconUSDIDR,"non-db"=>$btcIDR,"db"=>$dbUSDIDR));
-	$this->response(array("IDR"=>array("icon"=>$iconUSDIDR,"value"=>$btcIDR),"USD"=>array("icon"=>$iconBTCUSD,"value"=>$btcUSD),"FRAS"=>array("icon"=>$iconFRASCOIN,"value"=>$frs)));
+	$this->response(array("IDR"=>array("icon"=>$iconUSDIDR,"value"=>number_format($btcIDR)),"USD"=>array("icon"=>$iconBTCUSD,"value"=>number_format($btcUSD,2)),"FRAS"=>array("icon"=>$iconFRASCOIN,"value"=>number_format($frs,8))));
 	
 		
+    }
+    function getDate_get()
+    {
+        $get = $this->db->get_where("timerCrowdsale",array("id_timer"=>1));
+        $this->response(array("time"=>$get->result()[0]->timer,"curdate"=>date("Y-m-d")));
     }
     function createNXT_get()
     {
@@ -214,6 +232,24 @@ class Rest extends \Restserver\Libraries\REST_Controller {
         }
         
     }
+    function showAllTrx_get()
+    {
+	    $this->_sessionRestrict();
+        $configuration = Configuration::apiKey("bOFtsDfxvaDZ7wzW","aBk57n9ptZZPNOE2wmmlJ4cfgpNe6oiG");
+        $client = Client::create($configuration);
+        $client->getAccounts();
+        $data = $client->decodeLastResponse()["data"];
+        foreach($data as $list_key => $value){
+            $id_acc =  Account::reference($value["id"]);
+            $client->getAccountTransactions($id_acc);
+            foreach($client->decodeLastResponse()["data"] as $dataWallet)
+            {
+                
+                $dataResult[] = array("account"=>$value["name"],"amount"=>$dataWallet["amount"]["amount"],"create_at"=>$dataWallet["created_at"],"hash"=>$dataWallet["network"]["hash"],"status"=>$dataWallet["network"]["status"],"details"=>$dataWallet["details"]["title"]); 	   
+            }
+        } 
+        $this->response($dataResult);
+    }   
     function showTrx_get()
     {
 	$this->_sessionRestrict();
@@ -230,7 +266,48 @@ class Rest extends \Restserver\Libraries\REST_Controller {
 	 //print_r($value);break;
 	}
 	$client->getAccountTransactions($id_acc);
-	$this->response($client->decodeLastResponse());
+    $data = $client->decodeLastResponse();
+    $rateFras = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->frascoin;
+    $rateIDR = $this->db->get_where("rate",array("id_rate"=>1))->result()[0]->usdidr;
+    $date_target = new DateTime($this->db->get_where("timerCrowdsale",array("id_timer"=>1))->result()[0]->timer);
+    for($i = 0; $i <= count($data["data"]) - 1; $i++)
+    {
+    $curdate = new DateTime($data["data"][$i]["created_at"]);
+    $result_date = $date_target->diff($curdate);
+    $days = $result_date->format("%a");
+    if ($days == 15)
+	{
+	$percentBonus = 23.08;
+	}elseif ($days == 14)
+	{
+	$percentBonus = 18.46;
+	}elseif ($days <= 13 && $days > 10)
+	{
+	$percentBonus = 15.38;
+	}elseif ($days <= 10 && $days > 7)
+	{
+	$percentBonus = 10.77;
+	}elseif ($days <= 7 && $days > 4)
+	{
+	$percentBonus = 7.69;
+	}elseif ($days <= 4 && $days > 1)
+	{
+	$percentBonus = 3.85;
+	}else{
+	$percentBonus = 0;
+	}
+    	if(!isset($data["data"][$i]["network"]))
+        {
+        	$percentBonus = 0;
+        }elseif(!($data["data"][$i]["amount"]["amount"] > 0))
+        {
+        	$percentBonus = 0;
+        }
+    
+        $myFras = ($data["data"][$i]["amount"]["amount"]*$rateIDR) / ($rateFras*$rateIDR);
+    	$data["data"][$i]["bonus"] = array("percent"=>$percentBonus,"amount"=>number_format($myFras,8));
+    }
+	$this->response($data);
     }
     function login_post()
     {

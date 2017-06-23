@@ -356,36 +356,26 @@ $(function() {
     var myElem = document.getElementById('dollar_class');
     if (myElem != null) {
         $(function() {
-        	var timedata;
-        	$.ajax({
-    			url : base_url + "rest/getDate",
-    			type : "get",
-    			async: false,
-    			success : function(data) {
-       				timedata = data;
-    			}
-		 	});
-        	var target_date = new Date(timedata.time).getTime();
-        	var days, hours, minutes, seconds;
-       	 	var countdown = document.getElementById('countdown');
-        	setInterval(function () {
-            var current_date = new Date().getTime();
-            var seconds_left = (target_date - current_date) / 1000;
-            days = parseInt(seconds_left / 86400);
-            seconds_left = seconds_left % 86400;
-            hours = parseInt(seconds_left / 3600);
-            seconds_left = seconds_left % 3600;
-            minutes = parseInt(seconds_left / 60);
-            seconds = parseInt(seconds_left % 60);
-            countdown.innerHTML = days +  ':' + hours + ':'
-            + minutes + ':' + seconds; 
-            var percentBonus = "";
-            if(days == 15){percentBonus = 23.08;}else if(days == 14){percentBonus = 18.46;}else if (days <= 13 && days > 10){percentBonus = 15.38;}else if(days <= 10 && days > 7){percentBonus = 10.77;}else if(days <= 7 && days > 4){percentBonus = 7.69;}else if(days <= 4 && days > 1){percentBonus = 3.85;}else{percentBonus = 0;}
-            $("#bonusStage").html(percentBonus+"%");
+            var target_date = new Date('2017-07-01').getTime();
+            var days, hours, minutes, seconds;
+            var countdown = document.getElementById('countdown');
+            setInterval(function() {
+                var current_date = new Date().getTime();
+                var seconds_left = (target_date - current_date) / 1000;
+                days = parseInt(seconds_left / 86400);
+                seconds_left = seconds_left % 86400;
+                hours = parseInt(seconds_left / 3600);
+                seconds_left = seconds_left % 3600;
+                minutes = parseInt(seconds_left / 60);
+                seconds = parseInt(seconds_left % 60);
+                countdown.innerHTML = days + ':' + hours + ':' +
+                    minutes + ':' + seconds;
+
+
             }, 1000);
-     	   	setInterval(function () {
-              getData();
-			}, 10000); 
+            setInterval(function() {
+                getData();
+            }, 10000);
         });
         $(".allacc").click(function() {
             setTimeout(function() {
@@ -404,10 +394,10 @@ $(function() {
                         trx += "<td>" + data[i].account + "</td>";
                         trx += "<td>" + data[i].amount + "</td>";
                         trx += "<td>" + data[i].details + "</td>";
-                        trx += "<td>" + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear() + " "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds()+"</td>";
+                        trx += "<td>" + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear() + "</td>";
                         trx += "<td><a href='https://blockchain.info/tx/" + data[i].hash + "' class='btn btn-success'>Show Details Trx</a> <span class='label label-info'>" + data[i].status + "</span></td>";
                         trx += "</tr>";
-                        btcTotal = parseFloat(btcTotal) + parseFloat(data[i].amount);
+                        btcTotal = btcTotal + parseFloat(data[i].amount).toFixed(8);
                     }
                     $("#btctotalAll").html(btcTotal);
                     $("#trxAll").html(trx);
@@ -419,43 +409,19 @@ $(function() {
                 $.get(base_url + "rest/showTrx", function(data) {
                     var trx = "";
                     var btcTotal = 0;
-                    var frsTotal = 0;
                     for (var i = 0; i < data.data.length; i++) {
                         var no = i + 1;
                         var time = new Date(data.data[i].created_at);
-                        var statusLabel = "";
-                    	if(("network" in data.data[i]))
-                        {
-                        if (data.data[i].network.status == "confirmed") {
-                            statusLabel = "success";
-                        } else {
-                            statusLabel = "danger";
-                        }
-                        }
                         trx += "<tr>";
                         trx += "<td>" + no + "</td>";
-                         trx += "<td>" + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear() + " "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds()+"</td>";
+                        trx += "<td>" + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear() + "</td>";
                         trx += "<td>" + data.data[i].amount.amount + "</td>";
-                        trx += "<td>" + data.data[i].bonus.amount + " + "+data.data[i].bonus.percent+"%</td>";
-                    	if(!("network" in data.data[i]))
-                        {
-                        	trx += "<td><label class='label label-info'>Internal Transaction</label></td>";
-                        	trx += "<td><label class='label label-info'>Internal Transaction</label></td>";
-                        }else{
-                        	trx += "<td><a href='https://blockchain.info/tx/" + data.data[i].network.hash + "' class='btn btn-info'>Show Transaction</a></td>";
-                        trx += "<td><span class='label label-" + statusLabel + "'>" + data.data[i].network.status + "</span></td>";
-                        }
-                        
-                        
+                        trx += "<td>" + 0 + "</td>";
+                        trx += "<td>" + data.data[i].network.hash + " <span class='label label-info'>" + data.data[i].network.status + "</span></td>";
                         trx += "</tr>";
-                    	var amountBonus =  (data.data[i].bonus.percent*parseFloat(data.data[i].bonus.amount).toFixed(0))/100;
-                        btcTotal = parseFloat(btcTotal) + parseFloat(data.data[i].amount.amount);
-                    	var totFras = amountBonus+data.data[i].bonus.amount;
-                    	frsTotal = parseFloat(frsTotal) + parseFloat(data.data[i].bonus.amount)+parseFloat(amountBonus);
-                    	
+                        btcTotal = btcTotal + parseFloat(data.data[i].amount.amount).toFixed(8);
                     }
-                    $("#btctotal").html(parseFloat(btcTotal).toFixed(8));
-                    $("#frastotal").html(parseFloat(frsTotal).toFixed(8));
+                    $("#btctotal").html(btcTotal);
                     $("#trx").html(trx);
                 });
             }, 500);

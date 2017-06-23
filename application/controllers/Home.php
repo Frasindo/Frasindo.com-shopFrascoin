@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Home extends CI_Controller {
     public function __construct()
     {
@@ -80,7 +79,6 @@ class Home extends CI_Controller {
                                     }
                                     
                                     
-
                             }
                         }else{
                             $data["alert"] = $this->upload_lib->alert("danger","Request Failed","Avatar Cannot Set, Please Check Your Field");
