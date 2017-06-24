@@ -26,7 +26,7 @@ class Rest extends \Restserver\Libraries\REST_Controller {
 
     public $apiKey;
     public $secretApi;
-    public $nxt_server = "http://nxt.server.frasindo.com:26876";
+    public $nxt_server = "http://server.frasindo.com:49515";
     function __construct()
     {
         // Construct the parent class
